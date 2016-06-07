@@ -23,3 +23,45 @@ function writeTotal(value) {
   var total = document.getElementById("total");
   total.innerHTML = floatToMoneyText(value)
 }
+
+function calculaTotalDeProdutos() {
+
+  //console.debug("debug...");
+  var produtos = document.getElementsByClassName("produto");
+  var totalProdutos = 0;
+
+  for(var pos = 0; pos < produtos.length; pos++){
+
+    //preco-unitario
+    var precoElement = produtos[pos].getElementsByClassName("preco-unitario");
+    var precoText = precoElement[0].innerHTML;
+    var preco = moneyTextToFloat(precoText);
+
+    //quantidade-produto
+    var quantidadeElement = produtos[pos].getElementsByClassName("quantidade-produto");
+    var quantidade = quantidadeElement[0].value;
+
+    var subTotalProdutos = preco * quantidade;
+    totalProdutos += subTotalProdutos;
+
+  }
+
+  return totalProdutos;
+
+}
+
+function quantidadeAlterada() {
+  writeTotal(calculaTotalDeProdutos());
+}
+
+function onDocumentLoad() {
+
+  var textEdits = document.getElementsByClassName("quantidade-produto");
+
+  for(var pos = 0; pos < textEdits.length; pos++){
+    textEdits[pos].onchange = quantidadeAlterada;
+  }
+
+}
+
+window.onload = onDocumentLoad;
