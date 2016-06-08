@@ -30,14 +30,15 @@ function calculaTotalDeProdutos() {
   var produtos = document.getElementsByClassName("produto");
   var totalProdutos = 0;
 
+  //todos elementos 'produtos'
   for(var pos = 0; pos < produtos.length; pos++){
 
-    //preco-unitario
+    //preco
     var precoElement = produtos[pos].getElementsByClassName("preco-unitario");
     var precoText = precoElement[0].innerHTML;
     var preco = moneyTextToFloat(precoText);
 
-    //quantidade-produto
+    //quantidade
     var quantidadeElement = produtos[pos].getElementsByClassName("quantidade-produto");
     var quantidade = quantidadeElement[0].value;
 
@@ -50,16 +51,20 @@ function calculaTotalDeProdutos() {
 
 }
 
-function quantidadeAlterada() {
-  writeTotal(calculaTotalDeProdutos());
-}
+//function quantidadeAlterada() {
+//  writeTotal(calculaTotalDeProdutos());
+//}
 
 function onDocumentLoad() {
 
   var textEdits = document.getElementsByClassName("quantidade-produto");
 
+  //definimos o evento de cada elemento
   for(var pos = 0; pos < textEdits.length; pos++){
-    textEdits[pos].onchange = quantidadeAlterada;
+    textEdits[pos].onchange = function() {
+      //função de callback - somos informados de que algo ocorreu
+      writeTotal(calculaTotalDeProdutos());
+    };
   }
 
 }
