@@ -1,26 +1,52 @@
-console.log("Eventos tarefas...");
+$(function(){
 
-/*
-$("#tarefa").keydown(function(event){
-  console.log(event.which, String.fromCharCode(event.which));
-});
+  var $lastClicked;
 
-$("#tarefa").off();
-
-$("#tarefa").keydown(function(event){
-  if(event.which === 13){
-    console.log("Aqui estamos com a nossa tarefa!");
+  function onTarefaDeleteClick() {
+    //console.log($(this).parent(".tarefa-item").text().trim());
+    //this - elemento .tarefa-delete
+    $(this).parent(".tarefa-item").hide("slow", function(){
+      //this - elemento .tarefa-lista
+      $(this).remove();
+    });
   }
+
+  function savePendingEdition(tarefa) {
+    console.log("Aqui vamos salvar nossa tarefa sendo editada!");
+    //salva a tarefa
+  }
+
+  function onTarefaEditKeyDown(event) {
+
+    console.log("onTarefaEditKeyDowns");
+    if(event.which === 13){
+      savePendingEdition($lastClicked);
+      $lastClicked = undefined;
+    }
+
+  }
+
+  function onTarefaItemClick() {
+
+    if(!$(this).is($lastClicked)){
+
+      if($lastClicked !== undefined){
+        savePendingEdition($lastClicked);
+      }
+
+      $lastClicked = $(this);
+
+      var text = $lastClicked.children(".tarefa-texto").text();
+      var html = "<input type='text' class='tarefa-edit' value='" + text + "'>";
+
+      $lastClicked.html(html);
+
+      $(".tarefa-edit").keydown(onTarefaEditKeyDown);
+
+    }
+  }
+
+  $(".tarefa-delete").click(onTarefaDeleteClick);
+  $(".tarefa-item").click(onTarefaItemClick);
+
 });
-*/
-
-$("#tarefa").on("keydown.primeiro", function(event){
-  console.log("Esse é o primeiro evento!");
-});
-
-
-$("#tarefa").on("keydown.segundo", function(event){
-  console.log("Esse é o segundo evento!");
-});
-
-$("#tarefa").off("keydown.primeiro");
