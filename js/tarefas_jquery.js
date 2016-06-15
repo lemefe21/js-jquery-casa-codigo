@@ -11,29 +11,8 @@ $(function(){
     });
   }
 
-  function savePendingEdition($tarefa) {
-
-    //salva a tarefa
-    console.log("Aqui vamos salvar nossa tarefa sendo editada!");
-    //texto da tag criada ao clicar no elemento em onTarefaItemClick
-    var text = $tarefa.children(".tarefa-edit").val();
-    //remove o elemento
-    $tarefa.empty();
-
-    //monta um novo elemento tarefa
-    $tarefa.append("<div class='tarefa-texto'>" + text + "</div>")
-    .append("<div class='tarefa-delete'></div>")
-    .append("<div class='clear'></div>");
-
-    //declara os eventos para esse elemento criado
-    $(".tarefa-delete").click(onTarefaDeleteClick);
-    $tarefa.click(onTarefaItemClick);
-
-  }
-
   function onTarefaEditKeyDown(event) {
 
-    console.log("onTarefaEditKeyDowns");
     if(event.which === 13){
       savePendingEdition($lastClicked);
       $lastClicked = undefined;
@@ -41,8 +20,18 @@ $(function(){
 
   }
 
+  function onTarefaKeyDown(event) {
+
+    if(event.which === 13){
+      addTarefa($("#tarefa").val());
+      $("#tarefa").val("");
+    }
+
+  }
+
   function onTarefaItemClick() {
 
+    //se o click não for dado no mesmo elemento
     if(!$(this).is($lastClicked)){
 
       if($lastClicked !== undefined){
@@ -55,13 +44,55 @@ $(function(){
       var text = $lastClicked.children(".tarefa-texto").text();
       var html = "<input type='text' class='tarefa-edit' value='" + text + "'>";
 
+      //monta o elemento input para edit na tela
       $lastClicked.html(html);
 
+      //verifica o event de click
       $(".tarefa-edit").keydown(onTarefaEditKeyDown);
 
     }
   }
 
+  function savePendingEdition($tarefa) {
+
+    //texto da tag criada ao clicar no elemento em onTarefaItemClick
+    var text = $tarefa.children(".tarefa-edit").val();
+    //remove o elemento
+    $tarefa.empty();
+
+    //monta um novo elemento tarefa - manipulação DOM
+    $tarefa.append($("<div />")
+    .addClass("tarefa-texto").text(text))
+    .append($("<div />").addClass("tarefa-delete"))
+    .append($("<div />").addClass("clear"));
+
+    //declara os eventos para esse elemento criado
+    $(".tarefa-delete").click(onTarefaDeleteClick);
+    $tarefa.click(onTarefaItemClick);
+
+  }
+
+  function addTarefa(text) {
+
+    //padrão para variaveis que trabalhem com objeto JQuery - $tarefa
+    var $tarefa = $("<div />")
+                .addClass("tarefa-item")
+                .append($("<div />")
+                  .addClass("tarefa-texto")
+                  .text(text))
+                .append($("<div />")
+                  .addClass("tarefa-delete"))
+                .append($("<div />")
+                  .addClass("clear"));
+
+    $("#tarefa-lista").append($tarefa);
+
+    $(".tarefa-delete").click(onTarefaDeleteClick);
+    $(".tarefa-item").click(onTarefaItemClick);
+
+  }
+
+  $("#tarefa").keydown(onTarefaKeyDown);
   $(".tarefa-delete").click(onTarefaDeleteClick);
   $(".tarefa-item").click(onTarefaItemClick);
 
