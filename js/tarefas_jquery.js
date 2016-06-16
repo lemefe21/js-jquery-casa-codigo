@@ -11,6 +11,7 @@ $(function(){
     });
   }
 
+  //função para input de tarafas editadas
   function onTarefaEditKeyDown(event) {
 
     if(event.which === 13){
@@ -20,6 +21,7 @@ $(function(){
 
   }
 
+  //função para input de novas tarefas
   function onTarefaKeyDown(event) {
 
     if(event.which === 13){
@@ -34,6 +36,7 @@ $(function(){
     //se o click não for dado no mesmo elemento
     if(!$(this).is($lastClicked)){
 
+      //quando clicamos em outra tarefa com uma já em estado de edição
       if($lastClicked !== undefined){
         savePendingEdition($lastClicked);
       }
@@ -92,8 +95,9 @@ $(function(){
 
   }
 
-  $("#tarefa").keydown(onTarefaKeyDown);
   $(".tarefa-delete").click(onTarefaDeleteClick);
   $(".tarefa-item").click(onTarefaItemClick);
+
+  $("#tarefa").keydown(onTarefaKeyDown);
 
 });
