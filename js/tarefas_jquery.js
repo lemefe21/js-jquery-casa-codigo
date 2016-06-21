@@ -3,12 +3,14 @@ $(function(){
   var $lastClicked;
 
   function onTarefaDeleteClick() {
+
     //console.log($(this).parent(".tarefa-item").text().trim());
-    //this - elemento .tarefa-delete
+
+    //this >> elemento que possui a class >> .tarefa-delete
     $(this).parent(".tarefa-item").off("click").hide("slow", function(){
-      //this - elemento .tarefa-lista
       $(this).remove();
     });
+    
   }
 
   //função para input de tarafas editadas
